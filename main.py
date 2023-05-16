@@ -5,6 +5,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.types import ContentType
 import re
 import os
+from keepalive import *
 
 directory = 'documents'  # путь к директории, в которой нужно удалить файлы
 
@@ -14,7 +15,7 @@ for root, dirs, files in os.walk(directory):
     os.remove(os.path.join(root, file))
 
 # Токен бота
-TOKEN = 'СЮДАТОКЕН'
+TOKEN = os.environ['token']
 
 # Путь до базы данных
 DB_PATH = "antipublic.db"
@@ -56,7 +57,7 @@ async def start_command(message: types.Message):
   await message.answer(
     "👋 Привет! Я бот для работы с базой данных\n"
     "💌 Отправь мне свой email и пароль, разделив их символом ':'\n"
-    "📁 Если нужно добавить несколько строк сразу, просто отправь их мне"
+    "📁 Если нужно добавить несколько строк сразу, просто отправь их мне\n"
     "📄 Также я могу принимать текстовые документы до 20Мб (ограничение Telegram)"
   )
 
@@ -133,4 +134,5 @@ async def handle_message(message: types.Message):
 # Запускаем бота
 if __name__ == "__main__":
   from aiogram import executor
+  keep_alive()
   executor.start_polling(dp, skip_updates=True)
